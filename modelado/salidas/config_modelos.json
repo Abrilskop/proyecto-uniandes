@@ -1,0 +1,185 @@
+{
+  "variables_entrada": [
+    "DISBURSED_AMOUNT",
+    "PRI_SANCTIONED_AMOUNT",
+    "LTV",
+    "PRI_NO_OF_ACCTS",
+    "PRI_ACTIVE_ACCTS",
+    "PRI_OVERDUE_ACCTS",
+    "HISTORIAL_CRED_M",
+    "NO_OF_INQUIRIES",
+    "DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS",
+    "NEW_ACCTS_IN_LAST_SIX_MONTHS",
+    "EDAD",
+    "CNS_GRUPO",
+    "EMPLOYMENT_TYPE",
+    "BRANCH_ID",
+    "MANUFACTURER_ID"
+  ],
+  "variables_nuevas": [],
+  "usa_supplier_id": false,
+  "tipos_texto": [
+    "BRANCH_ID",
+    "MANUFACTURER_ID"
+  ],
+  "limite_impago": 0.2171,
+  "tasa_aprobacion": 0.9,
+  "franja_revision": 0.05,
+  "modelos": {
+    "ventas": {
+      "archivo": "modelo_ventas_boosting.pkl",
+      "tipo": "boosting",
+      "hiperparametros": {
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 15,
+        "min_samples_leaf": 100,
+        "l2_regularization": 0.0
+      },
+      "corte_revisar": 0.32031859052550077,
+      "corte_rechazar": 0.3438075966388097
+    },
+    "riesgo": {
+      "archivo": "modelo_riesgo_logistica.pkl",
+      "tipo": "logistica",
+      "hiperparametros": {
+        "C": 0.1,
+        "l1_ratio": 0.0
+      },
+      "corte_revisar": 0.3081972806556131,
+      "corte_rechazar": 0.33207998389233245
+    }
+  },
+  "cortes_prueba_octubre": {
+    "ventas": {
+      "corte_revisar": 0.2963571054431518,
+      "corte_rechazar": 0.32093786363404153
+    },
+    "riesgo": {
+      "corte_revisar": 0.29140288294642613,
+      "corte_rechazar": 0.31649344655178185
+    }
+  },
+  "metricas_octubre": {
+    "Trivial": {
+      "AUC": 0.5,
+      "PR_AUC": 0.23514700500182995,
+      "KS": 0.0,
+      "Brier": 0.18083050977603457,
+      "Prob_media": 0.2038801098004303,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.2333950840412073,
+      "Cumple_CN2": 0.0,
+      "Impagos_evitados": 2468.0,
+      "Buenos_rechazados": 7368.0,
+      "Monto_evitado_CE1": 141383158.0,
+      "Max_aprobados_CN2": 24248.0,
+      "Max_aprob_pct_CN2": 0.24651295189296898
+    },
+    "Regla buró": {
+      "AUC": 0.5544972497452278,
+      "PR_AUC": 0.26321810299920423,
+      "KS": 0.07444950569614062,
+      "Brier": 0.17964385292621043,
+      "Prob_media": 0.20375910848614895,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.22624480390384963,
+      "Cumple_CN2": 0.0,
+      "Impagos_evitados": 3101.0,
+      "Buenos_rechazados": 6735.0,
+      "Monto_evitado_CE1": 182172067.0,
+      "Max_aprobados_CN2": 34467.0,
+      "Max_aprob_pct_CN2": 0.3504025863120654
+    },
+    "Logística one-hot": {
+      "AUC": 0.6389572511857831,
+      "PR_AUC": 0.33786453519531356,
+      "KS": 0.2035756662300522,
+      "Brier": 0.17340601409753129,
+      "Prob_media": 0.2011658135764359,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.2171629315018977,
+      "Cumple_CN2": 0.0,
+      "Impagos_evitados": 3905.0,
+      "Buenos_rechazados": 5931.0,
+      "Monto_evitado_CE1": 238813228.0,
+      "Max_aprobados_CN2": 88494.0,
+      "Max_aprob_pct_CN2": 0.8996584116140052
+    },
+    "Logística WoE": {
+      "AUC": 0.6310401706640694,
+      "PR_AUC": 0.3281504254741583,
+      "KS": 0.19017736172006283,
+      "Brier": 0.17429387280639852,
+      "Prob_media": 0.20103307910040968,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.21862009759624074,
+      "Cumple_CN2": 0.0,
+      "Impagos_evitados": 3776.0,
+      "Buenos_rechazados": 6060.0,
+      "Monto_evitado_CE1": 226000628.0,
+      "Max_aprobados_CN2": 87428.0,
+      "Max_aprob_pct_CN2": 0.8888211134154772
+    },
+    "Gradient boosting": {
+      "AUC": 0.6478131443615477,
+      "PR_AUC": 0.34485533119985856,
+      "KS": 0.2176867490334609,
+      "Brier": 0.17263007459887794,
+      "Prob_media": 0.1980025557600231,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.21695960600036146,
+      "Cumple_CN2": 1.0,
+      "Impagos_evitados": 3923.0,
+      "Buenos_rechazados": 5913.0,
+      "Monto_evitado_CE1": 237111562.0,
+      "Max_aprobados_CN2": 88663.0,
+      "Max_aprob_pct_CN2": 0.9013765198649912
+    },
+    "Random Forest": {
+      "AUC": 0.6348930432022547,
+      "PR_AUC": 0.334155727986445,
+      "KS": 0.19678876182143956,
+      "Brier": 0.17384093846370807,
+      "Prob_media": 0.20239525219374913,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.21819085487077536,
+      "Cumple_CN2": 0.0,
+      "Impagos_evitados": 3814.0,
+      "Buenos_rechazados": 6022.0,
+      "Monto_evitado_CE1": 234841552.0,
+      "Max_aprobados_CN2": 87790.0,
+      "Max_aprob_pct_CN2": 0.8925013216217316
+    },
+    "Gradient boosting calibrada": {
+      "AUC": 0.6474796229078433,
+      "PR_AUC": 0.3462334751119034,
+      "KS": 0.21522279282413193,
+      "Brier": 0.1728096975087762,
+      "Prob_media": 0.1981275808673269,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.2166320260256642,
+      "Cumple_CN2": 1.0,
+      "Impagos_evitados": 3952.0,
+      "Buenos_rechazados": 5884.0,
+      "Monto_evitado_CE1": 240479880.0,
+      "Max_aprobados_CN2": 88821.0,
+      "Max_aprob_pct_CN2": 0.9029827985848481
+    },
+    "Logística one-hot calibrada": {
+      "AUC": 0.638222154286035,
+      "PR_AUC": 0.3374475824373378,
+      "KS": 0.2019076460690376,
+      "Brier": 0.17364287774568088,
+      "Prob_media": 0.19995340083948127,
+      "Impago_real": 0.23514700500182995,
+      "Impago_aprobados_90": 0.21744532803180913,
+      "Cumple_CN2": 0.0,
+      "Impagos_evitados": 3880.0,
+      "Buenos_rechazados": 5956.0,
+      "Monto_evitado_CE1": 236901694.0,
+      "Max_aprobados_CN2": 88205.0,
+      "Max_aprob_pct_CN2": 0.8967203448416087
+    }
+  },
+  "uso_en_tablero": "import preparacion, ingenieria; df = preparacion.preparar(datos, fecha_consulta=hoy); p = modelo.predict_proba(df[variables_entrada])[:, 1]; Rechazar si p >= corte_rechazar, Revisar si p >= corte_revisar, si no Aprobar"
+}
