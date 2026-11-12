@@ -1,0 +1,8 @@
+caso,registros,decision
+PRI_CURRENT_BALANCE < 0,448,Variable eliminada por redundancia
+SEC_CURRENT_BALANCE < 0,61,Variable eliminada: sin aporte
+PRI_SANCTIONED_AMOUNT >= 1e9,1,"Tope percentil 99,9 + log(1+x)"
+PRI_SANCTIONED_AMOUNT < 0,0,Se recorta a 0
+PRI_OVERDUE_ACCTS > PRI_ACTIVE_ACCTS,2607,Se conserva: posibles cuentas cerradas en mora (consulta al negocio)
+"LTV fuera de (0, 100]",0,Debe ser 0
+DISBURSED_AMOUNT <= 0,0,Debe ser 0

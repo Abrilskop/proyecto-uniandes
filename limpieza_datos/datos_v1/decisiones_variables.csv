@@ -1,0 +1,47 @@
+variable,decision
+UNIQUEID,Identificador (se guarda aparte)
+MOBILENO_AVL_FLAG,Constante
+PRI_DISBURSED_AMOUNT,Redundante
+PRI_CURRENT_BALANCE,Redundante
+ANTIG_PROM_CUENTAS_M,Redundante
+PERFORM_CNS_SCORE,Redundante
+PERFORM_CNS_SCORE_DESCRIPTION,Redundante
+STATE_ID,Redundante
+VOTERID_FLAG,Redundante
+ASSET_COST,Redundante
+SEC_NO_OF_ACCTS,Sin aporte
+SEC_ACTIVE_ACCTS,Sin aporte
+SEC_OVERDUE_ACCTS,Sin aporte
+SEC_CURRENT_BALANCE,Sin aporte
+SEC_SANCTIONED_AMOUNT,Sin aporte
+SEC_DISBURSED_AMOUNT,Sin aporte
+SEC_INSTAL_AMT,Sin aporte
+PAN_FLAG,Sin aporte
+DRIVING_FLAG,Sin aporte
+PASSPORT_FLAG,Sin aporte
+PRIMARY_INSTAL_AMT,Sin aporte
+EMPLOYEE_CODE_ID,Fuga de información
+CURRENT_PINCODE_ID,Sensible / demasiadas categorías
+SUPPLIER_ID,Sensible / demasiadas categorías
+DATE_OF_BIRTH,Ya transformada
+DISBURSAL_DATE,Ya transformada
+AVERAGE_ACCT_AGE,Ya transformada
+CREDIT_HISTORY_LENGTH,Ya transformada
+AADHAR_FLAG,A decidir por el equipo (sensible)
+LOAN_DEFAULT,Objetivo / partición
+MES,Objetivo / partición
+DISBURSED_AMOUNT,Variable del modelo
+PRI_SANCTIONED_AMOUNT,Variable del modelo
+LTV,Variable del modelo
+PRI_NO_OF_ACCTS,Variable del modelo
+PRI_ACTIVE_ACCTS,Variable del modelo
+PRI_OVERDUE_ACCTS,Variable del modelo
+HISTORIAL_CRED_M,Variable del modelo
+NO_OF_INQUIRIES,Variable del modelo
+DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS,Variable del modelo
+NEW_ACCTS_IN_LAST_SIX_MONTHS,Variable del modelo
+EDAD,Variable del modelo
+CNS_GRUPO,Variable del modelo
+EMPLOYMENT_TYPE,Variable del modelo
+BRANCH_ID,Variable del modelo
+MANUFACTURER_ID,Variable del modelo

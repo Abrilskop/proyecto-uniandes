@@ -1,0 +1,10 @@
+paso,conjunto,filas,columnas,nota
+0 Carga,train,233154,41,train.csv original
+0 Carga,test,112392,40,test.csv original
+1 Estructura,train,233154,41,Nombres estandarizados
+3 Fechas,train,233154,43,EDAD y MES creados
+4 Antigüedades,train,233154,45,Texto convertido a meses
+5 Categóricas,train,233154,46,"Sin dato en empleo, CNS_GRUPO, IDs como texto"
+7 Selección,train,233154,18,15 variables del modelo
+7 Selección,test,112392,17,15 variables del modelo
+11 Exportar,train,233154,18,Versión 1 guardada
