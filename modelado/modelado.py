@@ -74,6 +74,7 @@ LIMITE = prep.LIMITE_IMPAGO          # CN2: impago de los aprobados < 21,71 %
 APROBACION = 0.90                    # CN1: aprobar al menos el 90 %
 FRANJA_REVISION = 0.05               # dentro del 90 % aprobado, el 5 % más riesgoso pasa a "revisar"
 MEJORA_MINIMA = 0.002                # una variable extra se acepta si sube el AUC al menos 0,002
+CORTE_RECOMENDADO = 0.88             # cumple CN2 con 98 % de confianza (bootstrap en modelado.ipynb)
 NUM_LOG = prep.NUM_LOG
 NUM_BASE = prep.NUM
 CAT_BASE = prep.CAT
@@ -421,7 +422,9 @@ def main(dir_datos, dir_limpios, dir_salida):
         fpr, tpr, _ = roc_curve(y_oct, probs[nombre])
         ax.plot(fpr, tpr, label=f"{nombre} (AUC {resultados[nombre]['AUC']:.3f})")
     ax.plot([0, 1], [0, 1], "k--", lw=1, label="Trivial (AUC 0,5)")
-    ax.set(xlabel="Tasa de falsos positivos", ylabel="Tasa de verdaderos positivos", title="Curva ROC · octubre")
+    ax.set(xlabel="Tasa de falsos positivos", ylabel="Tasa de verdaderos positivos",
+           title=f"Los modelos ordenan mejor que la regla del buró\n(AUC {resultados['Gradient boosting']['AUC']:.3f}"
+                 f" frente a {resultados['Regla buró']['AUC']:.3f}) · octubre")
     ax.legend(fontsize=8)
     fig.tight_layout(); fig.savefig(grafico("roc_octubre.png"), dpi=150); plt.close(fig)
 
@@ -432,8 +435,11 @@ def main(dir_datos, dir_limpios, dir_salida):
             label="Regla buró (categorías completas)")
     ax.axhline(LIMITE * 100, color="red", ls=":", label=f"Meta CN2 ({LIMITE:.2%})")
     ax.axvline(APROBACION * 100, color="green", ls=":", label=f"Meta CN1 ({APROBACION:.0%})")
+    ax.axvline(CORTE_RECOMENDADO * 100, color="black", ls="--", lw=1,
+               label=f"Corte recomendado ({CORTE_RECOMENDADO:.0%})")
     ax.set(xlabel="% de solicitudes aprobadas", ylabel="% de impago de los aprobados",
-           title="Aprobación vs. impago · octubre", xlim=(30, 100))
+           title="Con el modelo se aprueban muchas más solicitudes\ncon el mismo impago que con la regla del buró · octubre",
+           xlim=(30, 100))
     ax.legend(fontsize=8)
     fig.tight_layout(); fig.savefig(grafico("curva_aprobacion_impago.png"), dpi=150); plt.close(fig)
 
@@ -442,20 +448,23 @@ def main(dir_datos, dir_limpios, dir_salida):
         frac, media = calibration_curve(y_oct, probs[nombre], n_bins=10, strategy="quantile")
         ax.plot(media, frac, "o-", label=f"{nombre} (Brier {resultados[nombre]['Brier']:.4f})")
     ax.plot([0, 0.6], [0, 0.6], "k--", lw=1)
-    ax.set(xlabel="Probabilidad predicha", ylabel="Impago observado", title="Calibración · octubre")
+    ax.set(xlabel="Probabilidad predicha", ylabel="Impago observado",
+           title="El modelo ordena bien, pero subestima\nel nivel de riesgo de octubre (puntos sobre la diagonal)")
     ax.legend(fontsize=8)
     fig.tight_layout(); fig.savefig(grafico("calibracion_octubre.png"), dpi=150); plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(7, 5))
     imp_g = importancia.sort_values("caida_AUC")
     ax.barh(imp_g["variable"], imp_g["caida_AUC"], xerr=imp_g["desv"])
-    ax.set(xlabel="Caída del AUC al permutar", title="Importancia de variables · gradient boosting")
+    ax.set(xlabel="Caída del AUC al permutar la variable",
+           title="LTV, sucursal y buró explican la mayor parte\ndel modelo de Ventas (gradient boosting)")
     fig.tight_layout(); fig.savefig(grafico("importancia_boosting.png"), dpi=150); plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(7, 6))
     top = coef.head(20).iloc[::-1]
     ax.barh(top["variable"], top["coeficiente"], color=np.where(top["coeficiente"] > 0, "#c0392b", "#27ae60"))
-    ax.set(xlabel="Coeficiente (positivo = más riesgo de impago)", title="Regresión logística · 20 coeficientes")
+    ax.set(xlabel="Coeficiente (positivo = más riesgo de impago)",
+           title="La sucursal y el LTV son lo que más mueve el riesgo\nen la regresión logística (20 coeficientes mayores)")
     fig.tight_layout(); fig.savefig(grafico("coeficientes_logistica.png"), dpi=150); plt.close(fig)
     print("Gráficos guardados en", os.path.join(dir_salida, "graficos"))
 
