@@ -1,0 +1,42 @@
+variable,tipo,valores distintos,ejemplo,¿en el modelo?
+UNIQUEID,Identificador,233154,420825,No
+DISBURSED_AMOUNT,Numérica continua,24565,50578,Sí
+ASSET_COST,Numérica continua,46252,58400,No
+LTV,Numérica continua,6579,89.55,Sí
+PRI_CURRENT_BALANCE,Numérica continua,71341,0,No
+PRI_SANCTIONED_AMOUNT,Numérica continua,44390,0,Sí
+PRI_DISBURSED_AMOUNT,Numérica continua,47909,0,No
+SEC_CURRENT_BALANCE,Numérica continua,3246,0,No
+SEC_SANCTIONED_AMOUNT,Numérica continua,2223,0,No
+SEC_DISBURSED_AMOUNT,Numérica continua,2553,0,No
+PRIMARY_INSTAL_AMT,Numérica continua,28067,0,No
+SEC_INSTAL_AMT,Numérica continua,1918,0,No
+PRI_NO_OF_ACCTS,Numérica discreta (conteo),108,0,Sí
+PRI_ACTIVE_ACCTS,Numérica discreta (conteo),40,0,Sí
+PRI_OVERDUE_ACCTS,Numérica discreta (conteo),22,0,Sí
+SEC_NO_OF_ACCTS,Numérica discreta (conteo),37,0,No
+SEC_ACTIVE_ACCTS,Numérica discreta (conteo),23,0,No
+SEC_OVERDUE_ACCTS,Numérica discreta (conteo),9,0,No
+NEW_ACCTS_IN_LAST_SIX_MONTHS,Numérica discreta (conteo),26,0,Sí
+DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS,Numérica discreta (conteo),14,0,Sí
+NO_OF_INQUIRIES,Numérica discreta (conteo),25,0,Sí
+PERFORM_CNS_SCORE,Numérica con códigos (mixta),573,0,No
+DATE_OF_BIRTH,Fecha (se convierte en numérica),15433,01-01-1984,Como EDAD (discreta)
+DISBURSAL_DATE,Fecha (se convierte en numérica),84,03-08-2018,Solo para partir por mes
+AVERAGE_ACCT_AGE,Texto (se convierte en numérica),192,0yrs 0mon,No
+CREDIT_HISTORY_LENGTH,Texto (se convierte en numérica),294,0yrs 0mon,Como HISTORIAL_CRED_M (discreta)
+BRANCH_ID,Categórica nominal (código o ID),82,67,Sí
+SUPPLIER_ID,Categórica nominal (código o ID),2953,22807,No
+MANUFACTURER_ID,Categórica nominal (código o ID),11,45,Sí
+CURRENT_PINCODE_ID,Categórica nominal (código o ID),6698,1441,No
+STATE_ID,Categórica nominal (código o ID),22,6,No
+EMPLOYEE_CODE_ID,Categórica nominal (código o ID),3270,1998,No
+EMPLOYMENT_TYPE,Categórica nominal,3,Salaried,Sí (con 'Sin dato')
+PERFORM_CNS_SCORE_DESCRIPTION,Categórica ordinal (en parte),20,No Bureau History Available,"Como CNS_GRUPO (7 grupos, nominal)"
+MOBILENO_AVL_FLAG,Binaria,1,1,No
+AADHAR_FLAG,Binaria,2,1,No
+PAN_FLAG,Binaria,2,0,No
+VOTERID_FLAG,Binaria,2,0,No
+DRIVING_FLAG,Binaria,2,0,No
+PASSPORT_FLAG,Binaria,2,0,No
+LOAN_DEFAULT,Binaria (variable objetivo),2,0,Es lo que se predice
