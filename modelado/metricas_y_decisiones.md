@@ -161,6 +161,18 @@ Medimos AUC, % aprobado e impago de los aprobados por edad y tipo de empleo. Los
 independientes tienen más impago real y se les aprueba algo menos (88 % frente a 92 % de los mayores de 46); el modelo
 distingue algo peor a los jóvenes (AUC 0,63 frente a 0,67). Es una diferencia moderada que se declara y se vigila.
 
+### Balanceo de clases (experimento)
+Comprobamos con datos si balancear las clases ayudaba (archivo `salidas/tablas/balanceo_clases.csv`):
+
+| Gradient boosting | AUC | Brier | Prob. media predicha | Impago de los aprobados al 88 % |
+|---|---|---|---|---|
+| **Sin balancear (modelo final)** | **0,648** | **0,173** | **19,8 %** | **21,40 %** |
+| Pesos por clase | 0,647 | 0,226 | 47,0 % | 21,42 % |
+| Submuestreo 50/50 (descarta 79 828 clientes) | 0,646 | 0,230 | 47,0 % | 21,37 % |
+
+Balancear **no cambia el orden** de los clientes (mismo AUC y mismas decisiones), pero **duplica las probabilidades**
+(47 % cuando el impago real fue 23,5 %). Por eso el modelo final no se balancea.
+
 ### Importancia de variables y coeficientes (explicabilidad)
 - **Importancia por permutación** (boosting): cuánto cae el AUC si se desordena una variable. LTV, sucursal y buró son
   las que más pesan. La usamos en lugar de la importancia interna de los árboles porque se mide en datos nuevos y no
@@ -189,7 +201,7 @@ distingue algo peor a los jóvenes (AUC 0,63 frente a 0,67). Es una diferencia m
 | Decisión | Lo que hicimos | Lo que no hicimos y por qué |
 |---|---|---|
 | **Validación** | Temporal: aprender con agosto, ajustar con septiembre, probar **una sola vez** en octubre | Validación cruzada aleatoria: mezcla meses y el impago cambia de 19,2 % a 23,5 % entre meses. Usar octubre para ajustar y para probar habría inflado los resultados. |
-| **Desbalance de clases** | Se mantuvo la proporción real; el desbalance se maneja con las métricas y el corte | **SMOTE, sobremuestreo o `class_weight="balanced"`**: alteran las probabilidades (las vuelven poco realistas) y no mejoran el orden de los clientes, que es lo que importa. |
+| **Desbalance de clases** | Se mantuvo la proporción real; el desbalance se maneja con las métricas y el corte. **Lo comprobamos con un experimento** (sección 6b del notebook) | **Pesos por clase y submuestreo 50/50** se probaron y se descartaron: el AUC no mejora (0,647 y 0,646 frente a 0,648) y la probabilidad media sube a 47 %, el doble del impago real. **SMOTE** no se probó: inventa clientes con combinaciones que no existen (por ejemplo, sucursales mezcladas) y es difícil de defender en crédito. |
 | **Umbral de decisión** | Por orden: aprobar el X % de menor riesgo, con zonas aprobar / revisar / rechazar | **Umbral de 0,5**: casi ningún cliente lo supera y no responde a ninguna meta del negocio. |
 | **Selección de variables** | Valor de información (IV), correlación ≥ 0,8, V de Cramér, disponibilidad antes de aprobar y ética; se probaron variables nuevas y el concesionario | **PCA**: mezcla variables y Riesgo no podría explicar por qué se rechaza a un cliente; además solo hay 15 variables. |
 | **Algoritmos** | Regresión logística (Lasso, Ridge y WoE), Random Forest y gradient boosting | **SVM, KNN y redes neuronales**: lentos con 233 mil registros, sin probabilidades directas o difíciles de explicar; en datos tabulares no superan a los árboles (Grinsztajn et al., 2022). **XGBoost / LightGBM**: el mismo método que nuestro gradient boosting. |

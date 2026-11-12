@@ -128,7 +128,7 @@ El título de cada gráfico ya dice el hallazgo.
 | ¿No es bajo 0,65? | Es moderado: la mitad no tiene historial y no tenemos el ingreso. Aun así es 2,7 veces mejor que la regla y cumple la meta del negocio. |
 | ¿Cómo clasifica a un cliente? | Calcula su probabilidad de no pagar y lo ordena: el 85 % más seguro se aprueba, el siguiente 5 % se revisa y el 10 % más riesgoso se rechaza. |
 | ¿Cuánto puede aprobar Ventas? | Hasta el 88 % con seguridad (21,4 %). Entre el 88 % y el 90 %, 1 de cada 3 clientes adicionales no paga. |
-| ¿Por qué no balancearon las clases (SMOTE)? | Distorsiona las probabilidades y no mejora el orden de los clientes. |
+| ¿Por qué no balancearon las clases (SMOTE)? | **Lo probamos.** Con pesos por clase y con submuestreo 50/50, el AUC quedó igual (0,647 y 0,646 frente a 0,648) y las decisiones no cambiaron, pero el modelo empezó a predecir 47 % de impago cuando el real fue 23,5 %: el doble. Balancear no mejora el orden y arruina las probabilidades. SMOTE no lo usamos porque inventa clientes que no existen. |
 | ¿Es justo el modelo? | Revisamos por edad y empleo: diferencias moderadas. Sin la edad el modelo casi no pierde (AUC 0,646), así que se puede retirar. |
 | ¿Limitaciones? | Solo hay clientes aprobados, solo se mira la primera cuota, el modelo se queda corto en meses malos y la sucursal es asociación, no causa. |
 | ¿En qué moneda están los montos? | El caso no lo dice. Los documentos (Aadhaar, PAN) sugieren India, pero no está confirmado; usamos las unidades del archivo. |
