@@ -99,7 +99,8 @@ def main(dir_datos, dir_salida):
     assert train["EDAD"].between(18, 100).all(), "Edades fuera de rango en train"
     menores = test[test["EDAD"] < 18]
     print(f"test: registros con edad < 18 a la fecha de solicitud aproximada = {len(menores)} "
-          "(no se eliminan; consulta al negocio)")
+          "(se conservan: cumplen 18 años el día del desembolso; la edad de 17 sale de restar los 2 días "
+          "con que se aproxima la fecha de solicitud)")
     if len(menores):
         print(menores[["UNIQUEID", "DATE_OF_BIRTH", "DISBURSAL_DATE", "EDAD"]].to_string(index=False))
     edad_desembolso = prep.edad_cumplida(
@@ -141,7 +142,7 @@ def main(dir_datos, dir_salida):
         ["PRI_SANCTIONED_AMOUNT >= 1e9", (train["PRI_SANCTIONED_AMOUNT"] >= 1e9).sum(), "Tope percentil 99,9 + log(1+x)"],
         ["PRI_SANCTIONED_AMOUNT < 0", (train["PRI_SANCTIONED_AMOUNT"] < 0).sum(), "Se recorta a 0"],
         ["PRI_OVERDUE_ACCTS > PRI_ACTIVE_ACCTS", (train["PRI_OVERDUE_ACCTS"] > train["PRI_ACTIVE_ACCTS"]).sum(),
-         "Se conserva: posibles cuentas cerradas en mora (consulta al negocio)"],
+         "Se conserva: pueden ser cuentas cerradas que siguen en mora; los datos no permiten verificarlo"],
         ["LTV fuera de (0, 100]", (~train["LTV"].between(0.01, 100)).sum(), "Debe ser 0"],
         ["DISBURSED_AMOUNT <= 0", (train["DISBURSED_AMOUNT"] <= 0).sum(), "Debe ser 0"],
     ], columns=["caso", "registros", "decision"])
