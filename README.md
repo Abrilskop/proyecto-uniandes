@@ -11,6 +11,7 @@ Equipo: Romel, Gianella, Marcela e Itzabel
 - **Tablero (en la nube):** [URL de Render]
 - **Reporte final (2 páginas):** [`reporte/Reporte_creditos_vehiculares.pdf`](reporte/Reporte_creditos_vehiculares.pdf)
 - **Enunciado del reto:** [`reto_uandina_20261109.pdf`](reto_uandina_20261109.pdf)
+- **Guía para la revisión (lo esencial, variables, gráficos y preguntas probables):** [`GUIA_REVISION.md`](GUIA_REVISION.md)
 
 ---
 
@@ -72,6 +73,8 @@ en la limpieza, el modelo y el tablero, para que un cliente nuevo se procese igu
 | Archivo | Para qué sirve |
 |---|---|
 | `eda.ipynb` | **Notebook del análisis exploratorio**, contado como historia en 5 partes: cómo son los créditos, quiénes no pagan, si sirve la regla del buró y dónde está el riesgo, si basta una variable y si el riesgo cambia por mes. Cada gráfico tiene un título con el hallazgo y una explicación. Termina con los 3 hallazgos. |
+| `tipos_de_variables.csv` | Las 41 variables clasificadas por tipo (continua, discreta, nominal, ordinal, binaria) y si entran al modelo. |
+| `graficos/00_asociacion_por_tipo.png` | Relación entre variables con la medida adecuada a cada tipo (Spearman, η, V de Cramér). |
 | `graficos/01` a `09` | Los gráficos en imagen (histogramas, caja, violín, barras, dispersión, correlaciones, pairplot, impago por mes) para el reporte y las diapositivas. |
 | `graficos/08_sucursales_interactivo.html` | Gráfico interactivo de sucursales (se abre con doble clic en el navegador). |
 
