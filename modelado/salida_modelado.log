@@ -1,0 +1,246 @@
+﻿
+==========================================================================================
+Paso 0 · Carga de datos limpios (versión 1) y partición por tiempo   [0 s]
+==========================================================================================
+Agosto (ajuste-entrenamiento)        68,002 créditos · impago 21.57%
+Septiembre (ajuste-evaluación)       66,788 créditos · impago 19.19%
+Ago+Sep (prueba-entrenamiento)      134,790 créditos · impago 20.39%
+Octubre (prueba final)               98,364 créditos · impago 23.51%
+Noviembre (predicción)              112,392 créditos · sin etiqueta
+
+==========================================================================================
+Paso 1 · Referencias en octubre (CML1): clasificador trivial y regla del buró   [8 s]
+==========================================================================================
+                 AUC       KS Max_aprobados_CN2 Max_aprob_pct_CN2
+Trivial          0.5      0.0             24248          0.246513
+Regla buró  0.554497  0.07445             34467          0.350403
+
+==========================================================================================
+Paso 2 · Ingeniería de características (ajuste: agosto -> septiembre)   [8 s]
+==========================================================================================
+Variables base (Fase 2): 15 | nuevas candidatas: ['TIENE_MORA', 'CONSULTO_BURO', 'PROP_MORA'] | SUPPLIER_ID agrupado (>=100 créditos, máx. 200)
+  nuevas=False SUPPLIER_ID=False -> AUC sep logística 0.6512 · boosting 0.6559
+  nuevas=False SUPPLIER_ID=True  -> AUC sep logística 0.6515 · boosting 0.6537
+  nuevas=True  SUPPLIER_ID=False -> AUC sep logística 0.6516 · boosting 0.6560
+  nuevas=True  SUPPLIER_ID=True  -> AUC sep logística 0.6520 · boosting 0.6534
+
+Decisión: variables nuevas = False · SUPPLIER_ID = False (se acepta un cambio solo si el AUC promedio sube >= 0.002)
+Variables de entrada del modelo final: 15 ['DISBURSED_AMOUNT', 'PRI_SANCTIONED_AMOUNT', 'LTV', 'PRI_NO_OF_ACCTS', 'PRI_ACTIVE_ACCTS', 'PRI_OVERDUE_ACCTS', 'HISTORIAL_CRED_M', 'NO_OF_INQUIRIES', 'DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS', 'NEW_ACCTS_IN_LAST_SIX_MONTHS', 'EDAD', 'CNS_GRUPO', 'EMPLOYMENT_TYPE', 'BRANCH_ID', 'MANUFACTURER_ID'] 
+
+Valor de información (IV) con agosto-septiembre:
+ BRANCH_ID                              0.0838
+LTV                                    0.0707
+CNS_GRUPO                              0.0641
+DISBURSED_AMOUNT                       0.0504
+PRI_SANCTIONED_AMOUNT                  0.0285
+PRI_NO_OF_ACCTS                        0.0226
+HISTORIAL_CRED_M                       0.0210
+PRI_ACTIVE_ACCTS                       0.0170
+EDAD                                   0.0106
+PRI_OVERDUE_ACCTS                      0.0105
+NEW_ACCTS_IN_LAST_SIX_MONTHS           0.0101
+MANUFACTURER_ID                        0.0089
+NO_OF_INQUIRIES                        0.0059
+EMPLOYMENT_TYPE                        0.0051
+DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS    0.0000
+
+==========================================================================================
+Paso 3 · Hiperparámetros (ajuste: agosto -> septiembre, métrica AUC)   [50 s]
+==========================================================================================
+  logistica      {"C": 0.01, "l1_ratio": 0.0}                                                                    AUC 0.6505  (3 s)
+  logistica      {"C": 0.1, "l1_ratio": 0.0}                                                                     AUC 0.6515  (2 s)
+  logistica      {"C": 1.0, "l1_ratio": 0.0}                                                                     AUC 0.6512  (2 s)
+  logistica      {"C": 0.01, "l1_ratio": 1.0, "solver": "liblinear"}                                             AUC 0.6352  (1 s)
+  logistica      {"C": 0.1, "l1_ratio": 1.0, "solver": "liblinear"}                                              AUC 0.6510  (5 s)
+  logistica      {"C": 1.0, "l1_ratio": 1.0, "solver": "liblinear"}                                              AUC 0.6514  (11 s)
+  logistica_woe  {"C": 0.01, "l1_ratio": 0.0}                                                                    AUC 0.6348  (1 s)
+  logistica_woe  {"C": 0.1, "l1_ratio": 0.0}                                                                     AUC 0.6396  (1 s)
+  logistica_woe  {"C": 1.0, "l1_ratio": 0.0}                                                                     AUC 0.6403  (1 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6578  (2 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6573  (2 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6575  (2 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6567  (2 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6573  (3 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6577  (2 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6572  (2 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6575  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6571  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6570  (1 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6568  (1 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6576  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6556  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6566  (3 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6575  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6569  (2 s)
+  bosque         {"min_samples_leaf": 50, "max_features": "sqrt"}                                                AUC 0.6392  (8 s)
+  bosque         {"min_samples_leaf": 50, "max_features": 0.3}                                                   AUC 0.6401  (11 s)
+  bosque         {"min_samples_leaf": 200, "max_features": "sqrt"}                                               AUC 0.6334  (6 s)
+  bosque         {"min_samples_leaf": 200, "max_features": 0.3}                                                  AUC 0.6345  (7 s)
+
+Mejores hiperparámetros: {
+ "logistica": {
+  "C": 0.1,
+  "l1_ratio": 0.0
+ },
+ "logistica_woe": {
+  "C": 1.0,
+  "l1_ratio": 0.0
+ },
+ "boosting": {
+  "learning_rate": 0.05,
+  "max_leaf_nodes": 15,
+  "min_samples_leaf": 100,
+  "l2_regularization": 0.0
+ },
+ "bosque": {
+  "min_samples_leaf": 50,
+  "max_features": 0.3
+ }
+}
+Variante de regresión logística para Riesgo: logistica (AUC sep one-hot 0.6515 vs WoE 0.6403)
+
+==========================================================================================
+Paso 4 · Prueba final: entrena ago+sep, evalúa en OCTUBRE (CML1, CML2)   [139 s]
+==========================================================================================
+  Logística one-hot  AUC 0.6390
+  Logística WoE      AUC 0.6310
+  Gradient boosting  AUC 0.6478
+  Random Forest      AUC 0.6349
+
+                                   AUC    PR_AUC        KS     Brier Prob_media Impago_aprobados_90 Cumple_CN2 Impagos_evitados Buenos_rechazados Monto_evitado_CE1 Max_aprobados_CN2 Max_aprob_pct_CN2
+Trivial                           0.5  0.235147       0.0  0.180831    0.20388            0.233395      False             2468              7368       141383158.0             24248          0.246513
+Regla buró                   0.554497  0.263218   0.07445  0.179644   0.203759            0.226245      False             3101              6735       182172067.0             34467          0.350403
+Logística one-hot            0.638957  0.337865  0.203576  0.173406   0.201166            0.217163      False             3905              5931       238813228.0             88494          0.899658
+Logística WoE                 0.63104   0.32815  0.190177  0.174294   0.201033             0.21862      False             3776              6060       226000628.0             87428          0.888821
+Gradient boosting            0.647813  0.344855  0.217687   0.17263   0.198003             0.21696       True             3923              5913       237111562.0             88663          0.901377
+Random Forest                0.634893  0.334156  0.196789  0.173841   0.202395            0.218191      False             3814              6022       234841552.0             87790          0.892501
+Gradient boosting calibrada   0.64748  0.346233  0.215223   0.17281   0.198128            0.216632       True             3952              5884       240479880.0             88821          0.902983
+Logística one-hot calibrada  0.638222  0.337448  0.201908  0.173643   0.199953            0.217445      False             3880              5956       236901694.0             88205           0.89672
+
+==========================================================================================
+Paso 5 · Punto de corte (CML3, CN1, CN2, CE1) en octubre   [282 s]
+==========================================================================================
+Impago de los aprobados según % aprobado:
+                  Gradient boosting  Logística one-hot  Random Forest
+tasa_aprobacion                                                     
+0.80                         20.20              20.26          20.56
+0.85                         20.93              20.98          21.15
+0.88                         21.40              21.43          21.56
+0.90                         21.70              21.72          21.82
+0.92                         21.96              22.01          22.05
+0.95                         22.47              22.48          22.54
+1.00                         23.51              23.51          23.51
+
+Gradient boosting: aprobando 90% -> impago aprobados 21.70% (meta < 21.71%) -> CN1 y CN2 SE CUMPLEN
+   impagos evitados 3,923 · buenos pagadores rechazados 5,913 · monto evitado 237,111,562
+   máximo aprobable con impago < 21.71%: 88,663 (90.14%) frente a 34,467 de la regla del buró (+54,196 créditos)
+
+Logística one-hot: aprobando 90% -> impago aprobados 21.72% (meta < 21.71%) -> CN1 y CN2 NO se cumplen a la vez
+   impagos evitados 3,905 · buenos pagadores rechazados 5,931 · monto evitado 238,813,228
+   máximo aprobable con impago < 21.71%: 88,494 (89.97%) frente a 34,467 de la regla del buró (+54,027 créditos)
+
+Ventas · BRANCH_ID (>= 200 créditos), 5 con mayor probabilidad de pago:
+            creditos  impago_real  pct_aprobado  prob_pago_media
+BRANCH_ID                                                      
+152            2731       0.1545        0.9974           0.8817
+17              637       0.1648        0.9984           0.8769
+66              205       0.2000        0.9951           0.8648
+19             2586       0.1810        0.9872           0.8608
+1              3419       0.1615        0.9962           0.8600
+
+Ventas · MANUFACTURER_ID (>= 200 créditos), 5 con mayor probabilidad de pago:
+                  creditos  impago_real  pct_aprobado  prob_pago_media
+MANUFACTURER_ID                                                      
+86                  44908       0.2194        0.9186           0.8138
+51                  11933       0.2305        0.9269           0.8079
+49                   4720       0.2286        0.9267           0.8011
+145                   297       0.2525        0.9192           0.7997
+120                  4206       0.2494        0.8930           0.7962
+
+==========================================================================================
+Paso 6 · Explicabilidad   [285 s]
+==========================================================================================
+Regresión logística (Riesgo), 15 coeficientes de mayor magnitud:
+                variable  coeficiente  odds_ratio
+     cat__BRANCH_ID_251       0.7671      2.1536
+     cat__BRANCH_ID_254       0.6013      1.8246
+     cat__BRANCH_ID_121      -0.5711      0.5649
+     cat__BRANCH_ID_152      -0.5466      0.5789
+      cat__BRANCH_ID_36       0.5203      1.6825
+      cat__BRANCH_ID_65       0.4897      1.6318
+      cat__BRANCH_ID_19      -0.4837      0.6165
+cat__CNS_GRUPO_Muy bajo      -0.4794      0.6192
+      cat__BRANCH_ID_82      -0.4060      0.6663
+     cat__BRANCH_ID_162      -0.3998      0.6704
+      cat__BRANCH_ID_78       0.3995      1.4910
+       cat__BRANCH_ID_1      -0.3941      0.6743
+      cat__BRANCH_ID_16       0.3893      1.4760
+               num__LTV       0.3814      1.4643
+     cat__BRANCH_ID_146       0.3810      1.4637
+
+Gradient boosting (Ventas), importancia por permutación (caída del AUC):
+                            variable  caida_AUC   desv
+                                LTV     0.0445 0.0016
+                          BRANCH_ID     0.0421 0.0033
+                          CNS_GRUPO     0.0203 0.0026
+                    NO_OF_INQUIRIES     0.0072 0.0010
+DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS     0.0070 0.0009
+                   DISBURSED_AMOUNT     0.0062 0.0003
+                    EMPLOYMENT_TYPE     0.0055 0.0007
+                    MANUFACTURER_ID     0.0053 0.0005
+                  PRI_OVERDUE_ACCTS     0.0050 0.0010
+                               EDAD     0.0038 0.0006
+              PRI_SANCTIONED_AMOUNT     0.0032 0.0011
+                   HISTORIAL_CRED_M     0.0007 0.0006
+                    PRI_NO_OF_ACCTS     0.0006 0.0001
+       NEW_ACCTS_IN_LAST_SIX_MONTHS     0.0000 0.0001
+                   PRI_ACTIVE_ACCTS    -0.0002 0.0003
+
+==========================================================================================
+Paso 7 · Desempeño por segmento (equidad, R11)   [315 s]
+==========================================================================================
+           modelo        segmento         grupo  creditos  impago_real    AUC  pct_aprobado  impago_aprobados
+Gradient boosting      GRUPO_EDAD         18-25     23078       0.2544 0.6296        0.8821            0.2343
+Gradient boosting      GRUPO_EDAD         26-30     19608       0.2417 0.6416        0.8919            0.2226
+Gradient boosting      GRUPO_EDAD         31-35     16394       0.2387 0.6479        0.8986            0.2199
+Gradient boosting      GRUPO_EDAD         36-45     24382       0.2212 0.6544        0.9135            0.2053
+Gradient boosting      GRUPO_EDAD           46+     14902       0.2155 0.6670        0.9179            0.1998
+Gradient boosting EMPLOYMENT_TYPE      Salaried     40420       0.2214 0.6508        0.9195            0.2071
+Gradient boosting EMPLOYMENT_TYPE Self employed     54373       0.2456 0.6458        0.8851            0.2245
+Gradient boosting EMPLOYMENT_TYPE      Sin dato      3571       0.2319 0.6249        0.9065            0.2184
+Logística one-hot      GRUPO_EDAD         18-25     23078       0.2544 0.6226        0.8781            0.2329
+Logística one-hot      GRUPO_EDAD         26-30     19608       0.2417 0.6355        0.8886            0.2236
+Logística one-hot      GRUPO_EDAD         31-35     16394       0.2387 0.6380        0.8878            0.2192
+Logística one-hot      GRUPO_EDAD         36-45     24382       0.2212 0.6441        0.9116            0.2047
+Logística one-hot      GRUPO_EDAD           46+     14902       0.2155 0.6541        0.9435            0.2041
+Logística one-hot EMPLOYMENT_TYPE      Salaried     40420       0.2214 0.6424        0.9341            0.2102
+Logística one-hot EMPLOYMENT_TYPE Self employed     54373       0.2456 0.6367        0.8725            0.2224
+Logística one-hot EMPLOYMENT_TYPE      Sin dato      3571       0.2319 0.6148        0.9322            0.2220
+
+==========================================================================================
+Paso 8 · Gráficos   [316 s]
+==========================================================================================
+Gráficos guardados en D:\proyecto uniandes\modelado\salidas\graficos
+
+==========================================================================================
+Paso 9 · Modelo final: reentrena ago-oct y predice noviembre   [320 s]
+==========================================================================================
+DECISION_VENTAS
+Aprobar     0.85
+Rechazar    0.10
+Revisar     0.05
+
+==========================================================================================
+Resumen   [343 s]
+==========================================================================================
+                                  AUC    PR_AUC        KS     Brier Impago_aprobados_90 Cumple_CN2 Monto_evitado_CE1 Max_aprobados_CN2
+Trivial                           0.5  0.235147       0.0  0.180831            0.233395      False       141383158.0             24248
+Regla buró                   0.554497  0.263218   0.07445  0.179644            0.226245      False       182172067.0             34467
+Logística one-hot            0.638957  0.337865  0.203576  0.173406            0.217163      False       238813228.0             88494
+Logística WoE                 0.63104   0.32815  0.190177  0.174294             0.21862      False       226000628.0             87428
+Gradient boosting            0.647813  0.344855  0.217687   0.17263             0.21696       True       237111562.0             88663
+Random Forest                0.634893  0.334156  0.196789  0.173841            0.218191      False       234841552.0             87790
+Gradient boosting calibrada   0.64748  0.346233  0.215223   0.17281            0.216632       True       240479880.0             88821
+Logística one-hot calibrada  0.638222  0.337448  0.201908  0.173643            0.217445      False       236901694.0             88205
+
+Tiempo total: 5.7 min · archivos en D:\proyecto uniandes\modelado\salidas
