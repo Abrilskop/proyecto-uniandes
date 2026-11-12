@@ -323,6 +323,18 @@ def main(dir_datos, dir_limpios, dir_salida):
     comparacion.to_csv(tabla("comparacion_modelos_octubre.csv"))
     print("\n", comparacion.drop(columns=["Impago_real"]).round(4).to_string())
 
+    # CSV de predicciones de octubre para el tablero (mismo formato que en la sesión 7:
+    # una fila por crédito y modelo, con la etiqueta real y la probabilidad predicha)
+    info = ["UNIQUEID", "BRANCH_ID", "MANUFACTURER_ID", "CNS_GRUPO", "EMPLOYMENT_TYPE", "EDAD", "LTV",
+            "DISBURSED_AMOUNT"]
+    etiquetas = {"Gradient boosting": "Gradient boosting", nombres[RIESGO]: "Regresión logística",
+                 "Random Forest": "Random Forest", "Regla buró": "Regla del buró"}
+    pred_oct = pd.concat([X_oct[info].assign(modelo=etiqueta, y_true=y_oct.to_numpy(),
+                                             proba=np.round(probs[nombre], 5))
+                          for nombre, etiqueta in etiquetas.items()], ignore_index=True)
+    pred_oct.to_csv(os.path.join(dir_salida, "predicciones_octubre.csv"), index=False)
+    print(f"\nPredicciones de octubre guardadas: {len(pred_oct):,} filas ({len(etiquetas)} modelos)")
+
     # ------------------------------------------------------------------ Paso 5
     titulo("Paso 5 · Punto de corte (CML3, CN1, CN2, CE1) en octubre")
     tasas = np.round(np.arange(0.50, 1.0001, 0.01), 2)

@@ -9,14 +9,14 @@ Octubre (prueba final)               98,364 créditos · impago 23.51%
 Noviembre (predicción)              112,392 créditos · sin etiqueta
 
 ==========================================================================================
-Paso 1 · Referencias en octubre (CML1): clasificador trivial y regla del buró   [8 s]
+Paso 1 · Referencias en octubre (CML1): clasificador trivial y regla del buró   [6 s]
 ==========================================================================================
                  AUC       KS Max_aprobados_CN2 Max_aprob_pct_CN2
 Trivial          0.5      0.0             24248          0.246513
 Regla buró  0.554497  0.07445             34467          0.350403
 
 ==========================================================================================
-Paso 2 · Ingeniería de características (ajuste: agosto -> septiembre)   [8 s]
+Paso 2 · Ingeniería de características (ajuste: agosto -> septiembre)   [7 s]
 ==========================================================================================
 Variables base (Fase 2): 15 | nuevas candidatas: ['TIENE_MORA', 'CONSULTO_BURO', 'PROP_MORA'] | SUPPLIER_ID agrupado (>=100 créditos, máx. 200)
   nuevas=False SUPPLIER_ID=False -> AUC sep logística 0.6512 · boosting 0.6559
@@ -45,37 +45,37 @@ EMPLOYMENT_TYPE                        0.0051
 DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS    0.0000
 
 ==========================================================================================
-Paso 3 · Hiperparámetros (ajuste: agosto -> septiembre, métrica AUC)   [50 s]
+Paso 3 · Hiperparámetros (ajuste: agosto -> septiembre, métrica AUC)   [42 s]
 ==========================================================================================
-  logistica      {"C": 0.01, "l1_ratio": 0.0}                                                                    AUC 0.6505  (3 s)
-  logistica      {"C": 0.1, "l1_ratio": 0.0}                                                                     AUC 0.6515  (2 s)
-  logistica      {"C": 1.0, "l1_ratio": 0.0}                                                                     AUC 0.6512  (2 s)
-  logistica      {"C": 0.01, "l1_ratio": 1.0, "solver": "liblinear"}                                             AUC 0.6352  (1 s)
+  logistica      {"C": 0.01, "l1_ratio": 0.0}                                                                    AUC 0.6505  (2 s)
+  logistica      {"C": 0.1, "l1_ratio": 0.0}                                                                     AUC 0.6515  (3 s)
+  logistica      {"C": 1.0, "l1_ratio": 0.0}                                                                     AUC 0.6512  (3 s)
+  logistica      {"C": 0.01, "l1_ratio": 1.0, "solver": "liblinear"}                                             AUC 0.6352  (2 s)
   logistica      {"C": 0.1, "l1_ratio": 1.0, "solver": "liblinear"}                                              AUC 0.6510  (5 s)
   logistica      {"C": 1.0, "l1_ratio": 1.0, "solver": "liblinear"}                                              AUC 0.6514  (11 s)
   logistica_woe  {"C": 0.01, "l1_ratio": 0.0}                                                                    AUC 0.6348  (1 s)
   logistica_woe  {"C": 0.1, "l1_ratio": 0.0}                                                                     AUC 0.6396  (1 s)
   logistica_woe  {"C": 1.0, "l1_ratio": 0.0}                                                                     AUC 0.6403  (1 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6578  (2 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6573  (2 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6575  (2 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6567  (2 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6573  (3 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6577  (2 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6572  (2 s)
-  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6575  (2 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6571  (2 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6570  (1 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6568  (1 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6578  (4 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6573  (9 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6575  (5 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6567  (4 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6573  (5 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6577  (8 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6572  (22 s)
+  boosting       {"learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6575  (18 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6571  (4 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6570  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6568  (2 s)
   boosting       {"learning_rate": 0.1, "max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6576  (2 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6556  (2 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6566  (3 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6575  (2 s)
-  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6569  (2 s)
-  bosque         {"min_samples_leaf": 50, "max_features": "sqrt"}                                                AUC 0.6392  (8 s)
-  bosque         {"min_samples_leaf": 50, "max_features": 0.3}                                                   AUC 0.6401  (11 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 0.0} AUC 0.6556  (3 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 1.0} AUC 0.6566  (2 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 0.0} AUC 0.6575  (1 s)
+  boosting       {"learning_rate": 0.1, "max_leaf_nodes": 31, "min_samples_leaf": 400, "l2_regularization": 1.0} AUC 0.6569  (1 s)
+  bosque         {"min_samples_leaf": 50, "max_features": "sqrt"}                                                AUC 0.6392  (7 s)
+  bosque         {"min_samples_leaf": 50, "max_features": 0.3}                                                   AUC 0.6401  (7 s)
   bosque         {"min_samples_leaf": 200, "max_features": "sqrt"}                                               AUC 0.6334  (6 s)
-  bosque         {"min_samples_leaf": 200, "max_features": 0.3}                                                  AUC 0.6345  (7 s)
+  bosque         {"min_samples_leaf": 200, "max_features": 0.3}                                                  AUC 0.6345  (6 s)
 
 Mejores hiperparámetros: {
  "logistica": {
@@ -100,7 +100,7 @@ Mejores hiperparámetros: {
 Variante de regresión logística para Riesgo: logistica (AUC sep one-hot 0.6515 vs WoE 0.6403)
 
 ==========================================================================================
-Paso 4 · Prueba final: entrena ago+sep, evalúa en OCTUBRE (CML1, CML2)   [139 s]
+Paso 4 · Prueba final: entrena ago+sep, evalúa en OCTUBRE (CML1, CML2)   [188 s]
 ==========================================================================================
   Logística one-hot  AUC 0.6390
   Logística WoE      AUC 0.6310
@@ -117,8 +117,10 @@ Random Forest                0.634893  0.334156  0.196789  0.173841   0.202395  
 Gradient boosting calibrada   0.64748  0.346233  0.215223   0.17281   0.198128            0.216632       True             3952              5884       240479880.0             88821          0.902983
 Logística one-hot calibrada  0.638222  0.337448  0.201908  0.173643   0.199953            0.217445      False             3880              5956       236901694.0             88205           0.89672
 
+Predicciones de octubre guardadas: 393,456 filas (4 modelos)
+
 ==========================================================================================
-Paso 5 · Punto de corte (CML3, CN1, CN2, CE1) en octubre   [282 s]
+Paso 5 · Punto de corte (CML3, CN1, CN2, CE1) en octubre   [253 s]
 ==========================================================================================
 Impago de los aprobados según % aprobado:
                   Gradient boosting  Logística one-hot  Random Forest
@@ -158,7 +160,7 @@ MANUFACTURER_ID
 120                  4206       0.2494        0.8930           0.7962
 
 ==========================================================================================
-Paso 6 · Explicabilidad   [285 s]
+Paso 6 · Explicabilidad   [255 s]
 ==========================================================================================
 Regresión logística (Riesgo), 15 coeficientes de mayor magnitud:
                 variable  coeficiente  odds_ratio
@@ -197,7 +199,7 @@ DELINQUENT_ACCTS_IN_LAST_SIX_MONTHS     0.0070 0.0009
                    PRI_ACTIVE_ACCTS    -0.0002 0.0003
 
 ==========================================================================================
-Paso 7 · Desempeño por segmento (equidad, R11)   [315 s]
+Paso 7 · Desempeño por segmento (equidad, R11)   [273 s]
 ==========================================================================================
            modelo        segmento         grupo  creditos  impago_real    AUC  pct_aprobado  impago_aprobados
 Gradient boosting      GRUPO_EDAD         18-25     23078       0.2544 0.6296        0.8821            0.2343
@@ -218,12 +220,12 @@ Logística one-hot EMPLOYMENT_TYPE Self employed     54373       0.2456 0.6367  
 Logística one-hot EMPLOYMENT_TYPE      Sin dato      3571       0.2319 0.6148        0.9322            0.2220
 
 ==========================================================================================
-Paso 8 · Gráficos   [316 s]
+Paso 8 · Gráficos   [273 s]
 ==========================================================================================
 Gráficos guardados en D:\proyecto uniandes\modelado\salidas\graficos
 
 ==========================================================================================
-Paso 9 · Modelo final: reentrena ago-oct y predice noviembre   [320 s]
+Paso 9 · Modelo final: reentrena ago-oct y predice noviembre   [275 s]
 ==========================================================================================
 DECISION_VENTAS
 Aprobar     0.85
@@ -231,7 +233,7 @@ Rechazar    0.10
 Revisar     0.05
 
 ==========================================================================================
-Resumen   [343 s]
+Resumen   [293 s]
 ==========================================================================================
                                   AUC    PR_AUC        KS     Brier Impago_aprobados_90 Cumple_CN2 Monto_evitado_CE1 Max_aprobados_CN2
 Trivial                           0.5  0.235147       0.0  0.180831            0.233395      False       141383158.0             24248
@@ -243,4 +245,4 @@ Random Forest                0.634893  0.334156  0.196789  0.173841            0
 Gradient boosting calibrada   0.64748  0.346233  0.215223   0.17281            0.216632       True       240479880.0             88821
 Logística one-hot calibrada  0.638222  0.337448  0.201908  0.173643            0.217445      False       236901694.0             88205
 
-Tiempo total: 5.7 min · archivos en D:\proyecto uniandes\modelado\salidas
+Tiempo total: 4.9 min · archivos en D:\proyecto uniandes\modelado\salidas
