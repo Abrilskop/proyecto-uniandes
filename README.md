@@ -79,6 +79,7 @@ en la limpieza, el modelo y el tablero, para que un cliente nuevo se procese igu
 
 | Archivo | Para qué sirve |
 |---|---|
+| **`metricas_y_decisiones.md`** | **Qué métricas se usaron y cuáles no, y por qué** (AUC, KS, PR-AUC, calibración, métricas de negocio, robustez; por qué no accuracy, F1, SMOTE ni validación aleatoria). |
 | **`modelado.ipynb`** | **Empieza por aquí.** El entrenamiento paso a paso, ya ejecutado, con gráficos y una explicación en lenguaje de negocio después de cada sección: referencia del buró, elección de variables, 29 configuraciones probadas, prueba en octubre, robustez (bootstrap y sin sucursal/edad), explicabilidad y equidad. Termina con las conclusiones. |
 | `modelado.py` | El mismo proceso como script. **Es el que genera los archivos que usa el tablero.** Se corre con `python modelado.py` (≈ 6 minutos). |
 | `ingenieria.py` | Piezas que usa el modelo: variables nuevas que se probaron, agrupador de categorías y transformación WoE. |
