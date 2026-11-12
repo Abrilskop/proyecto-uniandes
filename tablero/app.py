@@ -596,6 +596,9 @@ def evaluar_cliente(n_clicks, *valores):
         html.Ul([html.Li(a, style={"color": COLOR["alerta"]}) for a in alertas]) if alertas else None,
         html.Div("Rechazar = está entre el 10 % de solicitudes más riesgosas; Revisar = el siguiente 5 %.",
                  style={"fontSize": "12px", "color": COLOR["suave"], "marginTop": "8px"}),
+        html.Div("Ojo: el modelo acierta al ordenar a los clientes, pero en octubre el impago real fue cerca de "
+                 "1,2 veces el que estimó. Usa la probabilidad para comparar clientes, no como cifra exacta.",
+                 style={"fontSize": "12px", "color": COLOR["alerta"], "marginTop": "6px"}),
     ])
     return resultado, fig_aporte(aporte_logistica(fila))
 
