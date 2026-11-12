@@ -97,10 +97,17 @@ APROBACION = CONFIG["tasa_aprobacion"]
 VARIABLES = CONFIG["variables_entrada"]
 TIPOS_TEXTO = {c: str for c in CONFIG["tipos_texto"]}
 
-pred = pd.read_csv(os.path.join(SALIDAS, "predicciones_octubre.csv"), dtype=TIPOS_TEXTO)
-pred["rango"] = pred.groupby("modelo")["proba"].rank(method="first", pct=True)   # 0 = menor riesgo
+# Solo las columnas que usa el tablero y tipos livianos (el plan gratis de Render tiene 512 MB de RAM)
+pred = pd.read_csv(os.path.join(SALIDAS, "predicciones_octubre.csv"),
+                   usecols=["BRANCH_ID", "MANUFACTURER_ID", "DISBURSED_AMOUNT", "modelo", "y_true", "proba"],
+                   dtype={**TIPOS_TEXTO, "DISBURSED_AMOUNT": "float32", "y_true": "int8", "proba": "float32"})
 MODELOS = [m for m in COLOR_MODELO if m in set(pred["modelo"])]
-POR_MODELO = {m: pred[pred["modelo"] == m].reset_index(drop=True) for m in MODELOS}
+POR_MODELO = {}
+for _m in MODELOS:
+    _d = pred[pred["modelo"] == _m].drop(columns="modelo").reset_index(drop=True)
+    _d["rango"] = _d["proba"].rank(method="first", pct=True).astype("float32")   # 0 = menor riesgo
+    POR_MODELO[_m] = _d
+del pred, _d, _m
 
 MODELO_VENTAS = joblib.load(os.path.join(SALIDAS, CONFIG["modelos"]["ventas"]["archivo"]))
 MODELO_RIESGO = joblib.load(os.path.join(SALIDAS, CONFIG["modelos"]["riesgo"]["archivo"]))
